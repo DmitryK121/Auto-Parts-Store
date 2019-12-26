@@ -1,0 +1,18 @@
+<aura:component controller="StoreService" access="global">
+
+    <aura:attribute type="Contact[]" name="clientList"></aura:attribute> 
+
+    <!-- EVENTS -->
+    <aura:registerEvent name="appEvent" type="c:SelectedClientId" />
+
+    <div class="c-navmenu">
+        <lightning:verticalNavigation onselect="{! c.handleClientSelect }">
+            <lightning:verticalNavigationSection label="Clients">
+                <aura:iteration items="{! v.clientList }" var="client">
+                    <lightning:verticalNavigationItemIcon label="{! client.Name }" name="{! client.Id }"
+                        iconName="utility:user" />
+                </aura:iteration>
+            </lightning:verticalNavigationSection>
+        </lightning:verticalNavigation>
+    </div>
+</aura:component>

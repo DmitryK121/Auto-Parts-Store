@@ -1,0 +1,12 @@
+.THIS .custom-box {
+    text-align: center;
+    background-color: #f4f6f9;
+    padding: 1rem;
+    border: 1px solid #d8dde6;
+}
+.THIS .paige-header-font{
+    font-size: 150%;
+}
+.THIS .button-pos{
+    float: right;
+}

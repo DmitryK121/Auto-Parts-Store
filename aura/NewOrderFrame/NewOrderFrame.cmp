@@ -1,0 +1,51 @@
+<aura:component controller="StoreService" implements="flexipage:availableForAllPageTypes, force:lightningQuickAction" access="global">
+
+    <aura:attribute access="public" name="client" type="Contact"></aura:attribute>
+    <aura:attribute access="public" name="newOrder" type="Id"></aura:attribute>
+    <aura:attribute access="public" name="newPart" type="Product2"></aura:attribute>
+    <aura:attribute access="public" name="orderSwitch" type="Boolean" default="true"></aura:attribute>
+    <aura:attribute access="public" name="partSwitch" type="Boolean" default="false"></aura:attribute>
+    <aura:attribute access="public" name="orderDescription" type="String"></aura:attribute>
+    <aura:attribute access="public" name="quantity" type="Integer" default="0"></aura:attribute>
+
+    <aura:registerEvent name="appEvent" type="c:SelectedClientId" />
+
+    <lightning:overlayLibrary aura:id="newOrderOverlay" />
+    <lightning:overlayLibrary aura:id="newOrderOverlayFrame" />
+    <lightning:notificationsLibrary aura:id="notifLibrary"/>
+
+    <aura:renderIf isTrue="{!v.orderSwitch}">
+
+        <!--CLIENT ORDER RECORD-EDIT FORM-->
+        <lightning:recordEditForm onsuccess="{!c.handleOrderSuccess}" objectApiName="Client_Order__c">
+            <lightning:messages />
+
+            <lightning:inputField fieldName="Client__c" value="{!v.client.Id}" label="{!v.client.Name}" disabled="true"
+                aura:id="clientId" />
+            <lightning:inputField fieldName="Order_Description__c" />
+
+            <div class="slds-m-top_medium slds-p-around_small">
+                <lightning:button variant="brand" type="submit" name="save" label="Save" />
+                <lightning:button label="Cancel" type="cancel" onclick="{! c.closeWindow }" />
+            </div>
+        </lightning:recordEditForm>
+
+        <aura:set attribute="else">
+        <!--PRODUCT RECORD-EDIT FORM-->
+            <lightning:recordEditForm onsuccess="{!c.handleProductSuccess}" objectApiName="Part_Order__c">
+                <lightning:messages />
+                <lightning:inputField fieldName="Client_Order_c__c" value="{!v.newOrder}" label="{!v.newOrder}"
+                    disabled="true" aura:id="clientId" />
+                <lightning:inputField fieldName="Part__c" />
+                <lightning:inputField fieldName="Quantity__c" value="{! v.quantity }"/>
+
+                <div class="slds-m-top_medium slds-p-around_small">
+                    <lightning:button variant="brand" type="submit" name="save" label="Save" />
+                    <lightning:button label="Cancel" type="cancel" onclick="{! c.closeWindow }" />
+                </div>
+            </lightning:recordEditForm>
+        </aura:set>
+
+    </aura:renderIf>
+
+</aura:component>

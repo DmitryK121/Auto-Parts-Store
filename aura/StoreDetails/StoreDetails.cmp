@@ -1,0 +1,101 @@
+    <aura:component controller="StoreService" implements="force:appHostable, flexipage:availableForAllPageTypes" access="global">
+
+    <lightning:overlayLibrary aura:id="newCarOverlay" />
+    <lightning:overlayLibrary aura:id="newOrderOverlay" />
+
+    <aura:attribute access="private" type="Id" name="recordId" default=""></aura:attribute>
+    <aura:attribute access="private" type="Boolean" name="isClientSelected" default="false"></aura:attribute>
+    <aura:attribute access="private" type="Contact" name="selectedClient" default=""></aura:attribute>
+    <aura:attribute access="private" type="Client_Cars__c[]" name="clientCars" default=""></aura:attribute>
+    <aura:attribute access="private" type="Client_Order__c[]" name="clientOrders" default=""></aura:attribute>
+    <aura:attribute access="private" type="String" name="accordionSectionText" default="Show more"></aura:attribute>
+    <aura:attribute type="List" name="activeSections"></aura:attribute>
+
+    <aura:handler event="c:SelectedClientId" action="{! c.handleSelectedClientIdEvent }" />
+
+    <aura:if isTrue="{! v.isClientSelected }">
+        <lightning:tabset selectedTabId="one" class="custom-box">
+            <!-- FIRST TAB -->
+            <lightning:tab label="Cars" id="one">
+                <h1 class="slds-p-around_x-small paige-header-font">Client information:</h1>
+                <lightning:recordViewForm recordId="{! v.recordId }" objectApiName="Contact">
+                    <div style="background-color: white;" class="slds-box">
+                        <lightning:outputField fieldName="Name" />
+                        <lightning:outputField fieldName="MobilePhone" />
+                        <lightning:outputField fieldName="Email" />
+                    </div>
+                </lightning:recordViewForm>
+
+                <aura:if isTrue="{! not(empty(v.clientCars))}">
+                    <h1 class="slds-p-around_x-small paige-header-font">Car information:</h1>
+                    <aura:iteration var="car" items="{! v.clientCars }">
+                        <lightning:recordViewForm recordId="{! car.Id }" objectApiName="Client_Cars__c">
+                            <div class="slds-box">
+                                <lightning:outputField fieldName="Car__c" />
+                                <lightning:outputField fieldName="Color__c" />
+                                <lightning:outputField fieldName="Gearbox__c" />
+                                <lightning:outputField fieldName="Type__c" />
+                            </div>
+                        </lightning:recordViewForm>
+                    </aura:iteration>
+                    <aura:set attribute="else">
+                        <h1 class="slds-p-around_x-small paige-header-font">Client doesn't have attached cars yet.</h1>
+                    </aura:set>
+                </aura:if>
+                <div class="slds-m-top_medium slds-p-around_xx-small" >
+                <lightning:button variant="success" label="Add new car" title="Success"
+                    onclick="{! c.handleAddNewCarForm }" />
+                </div>
+
+            </lightning:tab>
+
+            <!-- SECOND TAB -->
+
+            <lightning:tab label="Orders" id="two">
+                <aura:if isTrue="{! not(empty(v.clientOrders))}">
+                    <h2 class="slds-p-around_x-small paige-header-font">Order details:</h2>
+
+                    <aura:iteration indexVar="index" var="order" items="{! v.clientOrders }">
+
+                        <lightning:recordViewForm recordId="{! order.Id }" objectApiName="Client_Order__c">
+                            <div class="slds-box">
+                                <lightning:outputField fieldName="Client_Order_Number__c" />
+                                <lightning:outputField fieldName="Total_Order_Price__c" />
+                            </div>
+
+                    <lightning:accordion allowMultipleSectionsOpen="true" aura:id="accordion" onsectiontoggle="{! c.handleSectionToggle }">
+                        <lightning:accordionSection name="{! v.accordionSectionText }" label="{! v.accordionSectionText }">
+                            <aura:set attribute="body">
+                                <lightning:outputField fieldName="Order_Description__c" />
+                            </aura:set>
+                        </lightning:accordionSection>
+                    </lightning:accordion>
+
+                    <div class="slds-p-around_xxx-small button-pos">
+                        <lightning:button variant="brand" label="Add new part" title="Success"
+                        value="{! index }" onclick="{! c.handleAddNewPartForm }" />
+                    </div>
+                    
+
+                </lightning:recordViewForm>
+
+                    </aura:iteration>
+
+                    <aura:set attribute="else">
+                        <h2 class="slds-p-around_x-small paige-header-font">Client doesn't have orders yet.</h2>
+                    </aura:set>
+                </aura:if>
+
+                <div class="slds-m-top_medium slds-p-around_xx-small">
+                    <lightning:button variant="success" label="Add new order" title="Success" 
+                    onclick="{! c.handleAddNewOrderForm }" />
+                </div>
+            </lightning:tab>
+
+        </lightning:tabset>
+        <aura:set attribute="else">
+            <h2 class="slds-p-around_x-small paige-header-font">Select client.</h2>
+        </aura:set>
+    </aura:if>
+    
+</aura:component>

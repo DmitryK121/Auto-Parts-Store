@@ -1,0 +1,26 @@
+<aura:component implements="flexipage:availableForAllPageTypes, force:lightningQuickAction" access="global" >
+    
+<aura:attribute access="public" name="client" type="Contact"></aura:attribute>
+<aura:attribute access="public" name="newCar" type="Client_Cars__c"></aura:attribute>
+
+    <lightning:overlayLibrary aura:id="newCarOverlayFrame"/>
+    <lightning:notificationsLibrary aura:id="notifLibrary"/>
+
+    <aura:registerEvent name="appEvent" type="c:SelectedClientId" />
+    <!-- CLIENT CAR RECORD-EDIT FORM -->
+        <lightning:recordEditForm onsuccess="{!c.handleSuccess}"
+                                  objectApiName="Client_Cars__c">
+            <lightning:messages />
+            
+            <lightning:inputField fieldName="Client__c" value="{!v.client.Id}" label="{!v.client.Name}" disabled="true" aura:id="clientId" />
+            <lightning:inputField fieldName="Car__c"/>
+            <lightning:inputField fieldName="Type__c"/>          
+            <lightning:inputField fieldName="Color__c"/>
+            <lightning:inputField fieldName="Gearbox__c"/>
+            <!-- BUTTONS -->
+            <div class="slds-m-top_medium slds-p-around_small" >
+                <lightning:button variant="brand" type="submit" name="save" label="Save" />
+                <lightning:button label="Cancel" type="cancel" onclick="{! c.closeWindow }"/>
+            </div>
+        </lightning:recordEditForm>
+</aura:component>

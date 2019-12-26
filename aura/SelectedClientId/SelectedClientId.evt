@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="Application event about selected record">
+    <aura:attribute type="Id" name="recordId" required="true" description="ID of selected record" />
+</aura:event>
