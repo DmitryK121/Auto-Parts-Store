@@ -6,7 +6,6 @@
     <aura:attribute access="public" name="orderSwitch" type="Boolean" default="true"></aura:attribute>
     <aura:attribute access="public" name="partSwitch" type="Boolean" default="false"></aura:attribute>
     <aura:attribute access="public" name="orderDescription" type="String"></aura:attribute>
-    <aura:attribute access="public" name="quantity" type="Integer" default="0"></aura:attribute>
 
     <aura:registerEvent name="appEvent" type="c:SelectedClientId" />
 
